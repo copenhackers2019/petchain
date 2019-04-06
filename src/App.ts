@@ -1,9 +1,7 @@
 import { MongoClient } from "mongodb";
-import dotenv = require("dotenv");
 import express = require("express");
 import { ClientRouter } from "./routers/owner.router";
 import { ProfessionalRouter } from "./routers/pro.router";
-dotenv.config();
 class Project {
   public server: express.Express;
   public mongo: MongoClient;
@@ -12,7 +10,7 @@ class Project {
 
   public async start() {
     try {
-      this.mongo = await MongoClient.connect(process.env.MONGO_DB!, {useNewUrlParser: true});
+      this.mongo = await MongoClient.connect("mongodb://copenhack:copenhack1@ds133256.mlab.com:33256/clients", {useNewUrlParser: true});
       this.server = await express();
       this.server.use("/owner", new ClientRouter().getRouter());
       this.server.use("/professional", new ProfessionalRouter().getRouter());
