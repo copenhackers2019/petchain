@@ -1,7 +1,7 @@
 import { Dog } from "../src/logic/dog.logic";
 import { BirthEvent } from "../src/logic/event.logic";
 
-const lola = new Dog("chipId");
+const lola = new Dog("test-chip");
 const birth = new BirthEvent({
   senderId: "sergi",
   comments: "very beautiful and friendly",
