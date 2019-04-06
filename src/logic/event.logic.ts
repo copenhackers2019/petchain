@@ -28,15 +28,37 @@ export abstract class DogEvent implements IEvent {
     return j
   }
 
-  public static fromMessage(message: string): DogEvent | null {
-    const dataObj = JSON.parse(message);
-    const type = dataObj.type;
+  public static fromObject(obj: any): DogEvent | null {
+    const type = obj.type;
     switch(type) {
       case "birth":
-        return BirthEvent.fromObject(dataObj);
+        return BirthEvent.fromObject(obj);
+      case "found":
+        return FoundEvent.fromObject(obj);
+      case "lost":
+        return LostEvent.fromObject(obj);
+      case "info":
+        return InformationEvent.fromObject(obj);
+      case "ownership":
+        return OwnershipEvent.fromObject(obj);
+      case "observation":
+        return ObservationEvent.fromObject(obj);
+      case "illness":
+        return IllnessEvent.fromObject(obj);
+      case "cure":
+        return CureEvent.fromObject(obj);
+      case "vaccine":
+        return VaccineEvent.fromObject(obj);
+      case "death":
+        return DeathEvent.fromObject(obj);
       default:
         return null;
     }
+  }
+
+  public static fromMessage(message: string): DogEvent | null {
+    const dataObj = JSON.parse(message);
+    return DogEvent.fromObject(dataObj);
   }
 }
 
@@ -268,7 +290,7 @@ export class CureEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "illness",
+      type: "cure",
       illness: this.data.illness,
     }
   }
@@ -297,7 +319,7 @@ export class VaccineEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "illness",
+      type: "vaccine",
       vaccine: this.data.vaccine,
     }
   }
@@ -326,7 +348,7 @@ export class DeathEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "illness",
+      type: "death",
     }
   }
 
