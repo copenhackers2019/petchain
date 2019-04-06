@@ -1,5 +1,5 @@
-import { Dog } from "./src/logic/dog.logic";
-import { BirthEvent } from "./src/logic/event.logic";
+import { Dog } from "../src/logic/dog.logic";
+import { BirthEvent } from "../src/logic/event.logic";
 
 const lola = new Dog("chipId");
 const birth = new BirthEvent({
