@@ -7,7 +7,7 @@ export class ProfessionalRouter {
 
   constructor() {
     this.router = Router();
-    this.router.post("/", this.sendMessage);
+    this.router.post("/", this.sendEvent);
     this.router.post("/:uid/add_dog/:dogId", this.addDog);
   }
 
@@ -19,7 +19,7 @@ export class ProfessionalRouter {
     return this.router;
   }
 
-  public async sendMessage(req: Request, res: Response): Promise<Response | void> {
+  public async sendEvent(req: Request, res: Response): Promise<Response | void> {
     try {
       // Send message to Blockchain
     } catch (err) {
