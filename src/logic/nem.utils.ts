@@ -1,6 +1,15 @@
-import {Address, PublicAccount, AccountHttp, ChainHttp, BlockHttp, TransactionHttp, ServerConfig, NEMLibrary, NetworkTypes, Transaction, TransactionTypes, TransferTransaction, MultisigTransaction, PlainMessage} from "nem-library";
+import {Address, PublicAccount, AccountHttp, ChainHttp, BlockHttp, TransactionHttp, ServerConfig, NEMLibrary, NetworkTypes, Transaction, TransactionTypes, TransferTransaction, MultisigTransaction, PlainMessage, SignedTransaction, NodeHttp, TimeWindow} from "nem-library";
 import * as CryptoJS from "crypto-js";
 import { Observable } from "rxjs";
+
+const nodes = [
+  {protocol: "http", domain: "104.128.226.60", port: 7890},
+] as ServerConfig[];
+const accountHttp = new AccountHttp(nodes);
+const chainHttp = new ChainHttp(nodes);
+const blockHttp = new BlockHttp(nodes);
+const transactionHttp = new TransactionHttp(nodes);
+const nodeHttp = new NodeHttp(nodes);
 
 export const getDogAddress = (chipNumber: string): Address => {
   const pk = CryptoJS.SHA3(chipNumber, { outputLength: 256 }).toString();
@@ -8,39 +17,7 @@ export const getDogAddress = (chipNumber: string): Address => {
   return pa.address;
 };
 
-let accountHttp: AccountHttp;
-let chainHttp: ChainHttp;
-let blockHttp: BlockHttp;
-let transactionHttp: TransactionHttp;
-
-const initializeHttp = () => {
-    let nodes: ServerConfig[] = [];
-
-    if (NEMLibrary.getNetworkType() === NetworkTypes.TEST_NET) {
-        nodes = [
-            {protocol: "http", domain: "104.128.226.60", port: 7890},
-        ];
-    } else if (NEMLibrary.getNetworkType() === NetworkTypes.MAIN_NET) {
-        nodes = [
-            {protocol: "http", domain: "88.99.192.82", port: 7890},
-        ];
-    } else {
-        throw new Error("Not bootstrapped");
-    }
-
-    accountHttp = new AccountHttp(nodes);
-    if (NEMLibrary.getNetworkType() === NetworkTypes.TEST_NET) {
-        (accountHttp as any).historicalNodes = [
-            {protocol: "http", domain: "95.216.73.245", port: 7890},
-        ];
-    }
-    chainHttp = new ChainHttp(nodes);
-    blockHttp = new BlockHttp(nodes);
-    transactionHttp = new TransactionHttp(nodes);
-};
-
 const getAllTransactions = (receiver: Address): Observable<Transaction[]> => {
-  initializeHttp();
   const pageable = accountHttp.incomingTransactionsPaginated(receiver, {pageSize: 100});
   return pageable
       .map((allTransactions) => {
@@ -53,7 +30,6 @@ const getAllTransactions = (receiver: Address): Observable<Transaction[]> => {
 
 const getTransactionsWithString =
 (queryString: string, receiver: Address, sender?: Address, position: number = 0): Observable<TransferTransaction[]> => {
-    initializeHttp();
     return getAllTransactions(receiver)
         .map((allTransactions) => {
             // We only want transfer and multisig transactions, and we are only interested in
@@ -93,3 +69,19 @@ export const getAllMessagesWithString =
             }
         }).first().toPromise();
 };
+
+export const broadcastTransaction = async (trans: SignedTransaction): Promise<void> => {
+  await transactionHttp.announceTransaction(trans).first().toPromise();
+}
+
+export const createTimeWindow = async (): Promise<TimeWindow> => {
+  // for fixing the timestamp error at testnet
+  const nodeInfo = await nodeHttp.getNisNodeInfo().first().toPromise();
+  const chainTime = nodeInfo.nisInfo.currentTime;
+  const d = new Date();
+  const timeStamp = Math.floor(chainTime) + Math.floor(d.getSeconds() / 10);
+  const due = (NEMLibrary.getNetworkType() === NetworkTypes.TEST_NET) ? 60 : 24 * 60;
+  const deadline = timeStamp + due * 60;
+  return (TimeWindow as any).createFromDTOInfo(timeStamp, deadline) as TimeWindow;
+}
+
