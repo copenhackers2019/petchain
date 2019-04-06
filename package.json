@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "npm run test:only",
-    "start": "node dist/src/index.js",
+    "start": "node dist/index.js",
     "predev": "npm run build:only",
     "dev": "NODE_ENV=development node dist/src/index.js",
     "test:only": "NODE_ENV=test nyc mocha --opts mocha.opts",
