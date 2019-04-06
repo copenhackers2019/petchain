@@ -8,7 +8,7 @@ export class ProfessionalRouter {
   constructor() {
     this.router = Router();
     this.router.post("/", this.sendMessage);
-    this.router.post("/add_dog", this.addDog);
+    this.router.post("/:uid/add_dog/:dogId", this.addDog);
   }
 
   /**
@@ -29,8 +29,8 @@ export class ProfessionalRouter {
 
   public async addDog(req: Request, res: Response): Promise<Response | void> {
     try {
-      const uid = req.body.uid;
-      const dogId = req.body.dogId;
+      const uid = req.params.uid;
+      const dogId = req.params.dogId;
       await Owner.addOwnedDog(uid, dogId);
       // const dog = new Dog(dogId);
       // const info = new OwnerEvent({

@@ -11,13 +11,18 @@ class Project {
   constructor() {};
 
   public async start() {
-    this.mongo = await MongoClient.connect(process.env.MONGO_DB!, {useNewUrlParser: true});
-    this.server = await express();
-    this.server.use("/owner", new ClientRouter().getRouter());
-    this.server.use("/professional", new ProfessionalRouter().getRouter());
-    this.server.listen(3000, _ => {
-      console.log("Listening on port 3000")
-    });
+    try {
+      this.mongo = await MongoClient.connect(process.env.MONGO_DB!, {useNewUrlParser: true});
+      this.server = await express();
+      this.server.use("/owner", new ClientRouter().getRouter());
+      this.server.use("/professional", new ProfessionalRouter().getRouter());
+      this.server.listen(3000, _ => {
+        console.log("Listening on port 3000")
+      });
+    } catch (err) {
+      console.log("MALAKA", err);
+      throw err;
+    }
   }
 }
 

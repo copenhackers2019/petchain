@@ -7,7 +7,7 @@ export class ClientRouter {
   constructor() {
     this.router = Router();
     this.router.get("/:uid/dogs", this.getOwnDogs);
-    this.router.post("/new_owner", this.createOwner);
+    this.router.post("/new_owner/:uid", this.createOwner);
   }
 
   /**
@@ -31,7 +31,7 @@ export class ClientRouter {
 
   public async createOwner(req: Request, res: Response): Promise<Response | void> {
     try {
-      const uid = req.body.uid;
+      const uid = req.params.uid;
       const owner = new Owner({
         _id: uid,
         ownedDogs: []
