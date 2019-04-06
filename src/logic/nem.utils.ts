@@ -2,6 +2,8 @@ import {Address, PublicAccount, AccountHttp, ChainHttp, BlockHttp, TransactionHt
 import * as CryptoJS from "crypto-js";
 import { Observable } from "rxjs";
 
+NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
+
 const nodes = [
   {protocol: "http", domain: "104.128.226.60", port: 7890},
 ] as ServerConfig[];

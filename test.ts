@@ -10,5 +10,5 @@ const birth = new BirthEvent({
   country: "ES",
 });
 lola.sendEvent(birth).then(() => {
-  console.log("event sent to address " + lola.account);
+  console.log("event sent to address " + lola.account.plain());
 });
