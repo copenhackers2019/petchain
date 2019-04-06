@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import { Owner } from "../logic/owner.logic";
+import { Dog } from "../logic/dog.logic";
 
 export class ProfessionalRouter {
   private router: Router;
@@ -31,7 +32,13 @@ export class ProfessionalRouter {
       const uid = req.body.uid;
       const dogId = req.body.dogId;
       await Owner.addOwnedDog(uid, dogId);
-      // Send Owner transction to Blockchain
+      // const dog = new Dog(dogId);
+      // const info = new OwnerEvent({
+      //   // TODO
+      // });
+      // dog.sendEvent(info).then(() => {
+      //   console.log("event send to address " + dog.account.plain());
+      // });
 
       return res.status(200).json({ message: "Successfully added dog." });
     } catch (err) {

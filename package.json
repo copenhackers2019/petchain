@@ -10,6 +10,7 @@
   "scripts": {
     "start": "node dist/src/index.js",
     "build": "npm run build:only",
+    "build:only": "tsc -p tsconfig.json --pretty",
     "preversion": "npm run test",
     "postversion": "git push && git push --tags",
     "clean": "rm -rf dist/"
