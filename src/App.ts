@@ -11,7 +11,7 @@ class Project {
   constructor() {};
 
   public async start() {
-    this.mongo = await MongoClient.connect(process.env.MONGO_DB!);
+    this.mongo = await MongoClient.connect(process.env.MONGO_DB!, {useNewUrlParser: true});
     this.server = await express();
     this.server.use("/owner", new ClientRouter().getRouter());
     this.server.use("/professional", new ProfessionalRouter().getRouter());
