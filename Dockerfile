@@ -1,7 +1,7 @@
 FROM node:latest
 
-WORKDIR /
-COPY . /
+WORKDIR ./
+COPY . ./
 
 ARG NPM_TOKEN
 RUN echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
