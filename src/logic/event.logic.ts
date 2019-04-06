@@ -1,4 +1,4 @@
-import { IEventData, IBirthEventData, IFoundEventData } from "../models/event.model";
+import { IEventData, IBirthEventData, IFoundEventData, IInformationEventData, ILostEventData, IOwnershipEventData, IObservationEventData, IIllnessEventData, ICureEventData, IVaccineEventData, IDeathEventData } from '../models/event.model';
 
 export interface IEvent {
   data: IEventData;
@@ -18,11 +18,14 @@ export abstract class DogEvent implements IEvent {
   }
 
   public toJSON(): object {
-    return {
+    const j = {
       senderId: this.data.senderId,
-      comments: this.data.comments,
       date: this.data.date,
     };
+    if (this.data.comments) {
+      (j as any).comments = this.data.comments;
+    }
+    return j
   }
 
   public static fromMessage(message: string): DogEvent | null {
@@ -53,7 +56,7 @@ export class BirthEvent extends DogEvent {
       ...super.toJSON(),
       type: "birth",
       parents: this.data.parents,
-      country: this.data.country,
+      location: this.data.location,
     }
   }
 
@@ -63,7 +66,7 @@ export class BirthEvent extends DogEvent {
       comments: obj.comments,
       date: obj.date,
       parents: obj.parents,
-      country: obj.country,
+      location: obj.location,
     })
   }
 }
@@ -83,18 +86,255 @@ export class FoundEvent extends DogEvent {
     return {
       ...super.toJSON(),
       type: "found",
-      estimatedBirth: this.data.estimatedBirth,
-      country: this.data.country,
+      location: this.data.location,
     }
   }
 
-  public static fromObject(obj: any): BirthEvent {
-    return new BirthEvent ({
+  public static fromObject(obj: any): FoundEvent {
+    return new FoundEvent ({
       senderId: obj.senderId,
       comments: obj.comments,
       date: obj.date,
-      parents: obj.parents,
-      country: obj.country,
+      location: obj.location,
+    })
+  }
+}
+
+export class LostEvent extends DogEvent {
+  public readonly data: ILostEventData;
+
+  constructor (data: ILostEventData) {
+    super(data);
+  }
+
+  public makeMessage(): string {
+    return JSON.stringify(this.toJSON());
+  }
+
+  public toJSON(): object {
+    return {
+      ...super.toJSON(),
+      type: "lost",
+      location: this.data.location,
+      contact: this.data.contact,
+    }
+  }
+
+  public static fromObject(obj: any): LostEvent {
+    return new LostEvent ({
+      senderId: obj.senderId,
+      comments: obj.comments,
+      date: obj.date,
+      location: obj.location,
+      contact: obj.contact,
+    })
+  }
+}
+
+export class InformationEvent extends DogEvent {
+  public readonly data: IInformationEventData;
+
+  constructor (data: IInformationEventData) {
+    super(data);
+  }
+
+  public makeMessage(): string {
+    return JSON.stringify(this.toJSON());
+  }
+
+  public toJSON(): object {
+    const j = {
+      ...super.toJSON(),
+      type: "info",
+      name: this.data.name,
+      breed: this.data.breed,
+    }
+    if (this.data.estimatedBirth) {
+      (j as any).estimatedBirth = this.data.estimatedBirth;
+    }
+    return j;
+  }
+
+  public static fromObject(obj: any): InformationEvent {
+    return new InformationEvent ({
+      senderId: obj.senderId,
+      comments: obj.comments,
+      date: obj.date,
+      name: obj.name,
+      estimatedBirth: obj.estimatedBirth,
+      breed: obj.breed,
+    })
+  }
+}
+
+export class OwnershipEvent extends DogEvent {
+  public readonly data: IOwnershipEventData;
+
+  constructor (data: IOwnershipEventData) {
+    super(data);
+  }
+
+  public makeMessage(): string {
+    return JSON.stringify(this.toJSON());
+  }
+
+  public toJSON(): object {
+    return {
+      ...super.toJSON(),
+      type: "ownership",
+      ownerId: this.data.ownerId,
+      kind: this.data.kind,
+    }
+  }
+
+  public static fromObject(obj: any): OwnershipEvent {
+    return new OwnershipEvent ({
+      senderId: obj.senderId,
+      comments: obj.comments,
+      date: obj.date,
+      ownerId: obj.ownerId,
+      kind: obj.kind,
+    })
+  }
+}
+
+export class ObservationEvent extends DogEvent {
+  public readonly data: IObservationEventData;
+
+  constructor (data: IObservationEventData) {
+    super(data);
+  }
+
+  public makeMessage(): string {
+    return JSON.stringify(this.toJSON());
+  }
+
+  public toJSON(): object {
+    return {
+      ...super.toJSON(),
+      type: "observation",
+    }
+  }
+
+  public static fromObject(obj: any): ObservationEvent {
+    return new ObservationEvent ({
+      senderId: obj.senderId,
+      comments: obj.comments,
+      date: obj.date,
+    })
+  }
+}
+
+export class IllnessEvent extends DogEvent {
+  public readonly data: IIllnessEventData;
+
+  constructor (data: IIllnessEventData) {
+    super(data);
+  }
+
+  public makeMessage(): string {
+    return JSON.stringify(this.toJSON());
+  }
+
+  public toJSON(): object {
+    return {
+      ...super.toJSON(),
+      type: "illness",
+      illness: this.data.illness,
+    }
+  }
+
+  public static fromObject(obj: any): IllnessEvent {
+    return new IllnessEvent ({
+      senderId: obj.senderId,
+      comments: obj.comments,
+      date: obj.date,
+      illness: obj.illness,
+    })
+  }
+}
+
+export class CureEvent extends DogEvent {
+  public readonly data: ICureEventData;
+
+  constructor (data: ICureEventData) {
+    super(data);
+  }
+
+  public makeMessage(): string {
+    return JSON.stringify(this.toJSON());
+  }
+
+  public toJSON(): object {
+    return {
+      ...super.toJSON(),
+      type: "illness",
+      illness: this.data.illness,
+    }
+  }
+
+  public static fromObject(obj: any): CureEvent {
+    return new CureEvent ({
+      senderId: obj.senderId,
+      comments: obj.comments,
+      date: obj.date,
+      illness: obj.illness,
+    })
+  }
+}
+
+export class VaccineEvent extends DogEvent {
+  public readonly data: IVaccineEventData;
+
+  constructor (data: IVaccineEventData) {
+    super(data);
+  }
+
+  public makeMessage(): string {
+    return JSON.stringify(this.toJSON());
+  }
+
+  public toJSON(): object {
+    return {
+      ...super.toJSON(),
+      type: "illness",
+      vaccine: this.data.vaccine,
+    }
+  }
+
+  public static fromObject(obj: any): VaccineEvent {
+    return new VaccineEvent ({
+      senderId: obj.senderId,
+      comments: obj.comments,
+      date: obj.date,
+      vaccine: obj.vaccine,
+    })
+  }
+}
+
+export class DeathEvent extends DogEvent {
+  public readonly data: IDeathEventData;
+
+  constructor (data: IDeathEventData) {
+    super(data);
+  }
+
+  public makeMessage(): string {
+    return JSON.stringify(this.toJSON());
+  }
+
+  public toJSON(): object {
+    return {
+      ...super.toJSON(),
+      type: "illness",
+    }
+  }
+
+  public static fromObject(obj: any): DeathEvent {
+    return new DeathEvent ({
+      senderId: obj.senderId,
+      comments: obj.comments,
+      date: obj.date,
     })
   }
 }

@@ -7,7 +7,7 @@ const birth = new BirthEvent({
   comments: "very beautiful and friendly",
   parents: [],
   date: 100,
-  country: "ES",
+  location: "ES",
 });
 lola.sendEvent(birth).then(() => {
   console.log("event sent to address " + lola.account.plain());
