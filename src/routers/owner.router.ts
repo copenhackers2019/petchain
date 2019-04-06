@@ -8,7 +8,6 @@ export class ClientRouter {
     this.router = Router();
     this.router.get("/:uid/dogs", this.getOwnDogs);
     this.router.post("/new_owner", this.createOwner);
-    this.router.post("/add_dog", this.addDog);
   }
 
   /**
@@ -30,18 +29,6 @@ export class ClientRouter {
     }
   }
 
-  public async addDog(req: Request, res: Response): Promise<Response | void> {
-    try {
-      const uid = req.body.uid;
-      const dogId = req.body.dogId;
-      await Owner.addOwnedDog(uid, dogId);
-
-      return res.status(200).json({ message: "Successfully added dog." });
-    } catch (err) {
-      return res.status(500).json({ message: "Internal server error." });
-    }
-  }
-
   public async createOwner(req: Request, res: Response): Promise<Response | void> {
     try {
       const uid = req.body.uid;
@@ -54,5 +41,9 @@ export class ClientRouter {
     } catch (err) {
       return res.status(500).json({ message: "Internal server error." });
     }
+  }
+
+  public async getOwner() {
+
   }
 }
