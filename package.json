@@ -8,41 +8,21 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run test:only",
-    "start": "node dist/index.js",
-    "predev": "npm run build:only",
-    "dev": "NODE_ENV=development node dist/src/index.js",
-    "test:only": "NODE_ENV=test nyc mocha --opts mocha.opts",
-    "pretest": "npm run build",
-    "build:only": "tsc -p tsconfig.json --pretty",
-    "prebuild": "npm run lint",
+    "start": "node dist/src/index.js",
     "build": "npm run build:only",
-    "lint:only": "tslint -c tslint.json src/**/*.ts test/**/*.ts",
-    "lint": "npm run lint:only",
     "preversion": "npm run test",
     "postversion": "git push && git push --tags",
-    "doc:only": "npm run typedoc",
-    "predoc": "npm run lint",
-    "doc": "npm run doc:only",
-    "typedoc": "typedoc --out docs/typedoc src/",
     "clean": "rm -rf dist/"
   },
   "author": "Sergi, Marc & Guillem",
   "license": "ISC",
   "devDependencies": {
-    "@types/nock": "^9.3.1",
-    "@types/sinon": "^7.0.11",
-    "chai": "^4.2.0",
-    "chai-http": "^4.2.1",
     "json": "^9.0.6",
-    "mocha": "^6.0.2",
-    "nock": "^10.0.6",
-    "nyc": "^13.3.0",
-    "sinon": "^7.3.1",
-    "ts-node": "^8.0.3",
     "tslint": "^5.15.0",
-    "typedoc": "^0.14.2",
     "typescript": "^3.4.2"
   },
-  "private": false
+  "private": false,
+  "dependencies": {
+    "nem-library": "1.0.5"
+  }
 }
