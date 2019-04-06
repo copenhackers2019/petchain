@@ -1,0 +1,5 @@
+--timeout 60000
+--exit
+dist/test/*.test.js
+dist/test/**/*.test.js
+

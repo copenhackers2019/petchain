@@ -1,0 +1,11 @@
+.git/
+.nyc_output/
+coverage/
+node_modules/
+.editorconfig
+.env
+.eslintrc
+.gitignore
+.gitlab-ci.yml
+deployment.yaml
+documentation/
