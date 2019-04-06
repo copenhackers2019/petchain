@@ -1,4 +1,4 @@
-import { IEventData, IBirthEventData } from "../models/event.model";
+import { IEventData, IBirthEventData, IFoundEventData } from "../models/event.model";
 
 export interface IEvent {
   data: IEventData;
@@ -21,14 +21,16 @@ export abstract class DogEvent implements IEvent {
     return {
       senderId: this.data.senderId,
       comments: this.data.comments,
+      date: this.data.date,
     };
   }
 
   public static fromMessage(message: string): DogEvent | null {
-    let type = message.split(":")[0];
+    const dataObj = JSON.parse(message);
+    const type = dataObj.type;
     switch(type) {
       case "birth":
-        return BirthEvent.fromMessage(message);
+        return BirthEvent.fromObject(dataObj);
       default:
         return null;
     }
@@ -43,26 +45,56 @@ export class BirthEvent extends DogEvent {
   }
 
   public makeMessage(): string {
-    return "birth:" + JSON.stringify(this.toJSON());
+    return JSON.stringify(this.toJSON());
   }
 
   public toJSON(): object {
     return {
       ...super.toJSON(),
+      type: "birth",
       parents: this.data.parents,
-      date: this.data.date,
       country: this.data.country,
     }
   }
 
-  public static fromMessage(message: string): BirthEvent {
-    const dataObj = JSON.parse(message.replace("poll:", ""));
+  public static fromObject(obj: any): BirthEvent {
     return new BirthEvent ({
-      senderId: dataObj.senderId,
-      comments: dataObj.comments,
-      parents: dataObj.parents,
-      date: dataObj.date,
-      country: dataObj.country,
+      senderId: obj.senderId,
+      comments: obj.comments,
+      date: obj.date,
+      parents: obj.parents,
+      country: obj.country,
+    })
+  }
+}
+
+export class FoundEvent extends DogEvent {
+  public readonly data: IFoundEventData;
+
+  constructor (data: IFoundEventData) {
+    super(data);
+  }
+
+  public makeMessage(): string {
+    return JSON.stringify(this.toJSON());
+  }
+
+  public toJSON(): object {
+    return {
+      ...super.toJSON(),
+      type: "found",
+      estimatedBirth: this.data.estimatedBirth,
+      country: this.data.country,
+    }
+  }
+
+  public static fromObject(obj: any): BirthEvent {
+    return new BirthEvent ({
+      senderId: obj.senderId,
+      comments: obj.comments,
+      date: obj.date,
+      parents: obj.parents,
+      country: obj.country,
     })
   }
 }
