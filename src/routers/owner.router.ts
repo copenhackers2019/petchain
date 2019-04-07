@@ -23,7 +23,7 @@ export class ClientRouter {
       const uid = req.params.uid;
       const dogs = await Owner.getOwnDogs(uid);
 
-      return res.status(200).json({dogs});
+      return res.status(200).json({dogs: dogs});
     } catch (err) {
       return res.status(500).json({ message: "Internal server error." });
     }
