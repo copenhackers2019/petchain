@@ -36,9 +36,9 @@ export class Dog {
     return events as DogEvent[];
   }
 
-  public async getInfo(): Promise<IDogInfo> {
-    const events = await this.getEvents();
-    const ownerships = events.filter(e => e)
-  }
+  // public async getInfo(): Promise<IDogInfo> {
+  //   const events = await this.getEvents();
+  //   const ownerships = events.filter(e => e)
+  // }
 
 }
