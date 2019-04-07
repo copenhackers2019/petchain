@@ -30,6 +30,7 @@ export class ProfessionalRouter {
       //   params: Object;
       // }
       // 3. Send message to Blockchain
+      console.log("received", req.body);
       const dog = new Dog(req.body.dogId);
       const event = DogEvent.fromObject({...req.body.params, type: req.body.type});
       if (!event) {
