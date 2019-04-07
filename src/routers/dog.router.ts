@@ -28,7 +28,7 @@ export class DogRouter {
       const dogId = req.params.dogId;
       const dog = new Dog(dogId);
       const events = await dog.getEvents();
-      return res.status(200).json({events: events});
+      return res.status(200).json({events});
     } catch (err) {
       return res.status(500).json({ message: "Internal server error." });
     }

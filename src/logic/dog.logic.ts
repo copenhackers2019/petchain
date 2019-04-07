@@ -1,6 +1,6 @@
 import { Address, TransferTransaction, TimeWindow, XEM, PlainMessage, Account } from "nem-library";
 import { getDogAddress, getAllMessagesWithString, broadcastTransaction, createTimeWindow } from "./nem.utils";
-import { DogEvent, BirthEvent, InformationEvent } from "./event.logic";
+import { DogEvent, BirthEvent, InformationEvent, OwnershipEvent } from "./event.logic";
 import { APP_ADDRESS, APP_PRI_KEY } from "../constants";
 import { IDogInfo } from "../models/doginfo.model";
 import { DogEventType } from "../models/event.enum";
@@ -64,14 +64,14 @@ export class Dog {
       const lost = (String(lostFound) === String([])) ? false : (lostFound[lostFound.length - 1].type === DogEventType.LOST);
       const age = (birth > 0) ? (Date.now() - birth) / (1000 * 60 * 60 * 24 * 365) : -1;
       return {
-        owner: ownership ? ownership.data.senderId : "none",
+        owner: ownership ? (ownership as OwnershipEvent).data.ownerId : "none",
         age: age,
         name: name ? name : "none",
         lost: lost ? lost : false,
-      } 
+      }
     } catch (err) {
         throw err
-    } 
+    }
   }
 
 }
