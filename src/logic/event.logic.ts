@@ -3,12 +3,14 @@ import { DogEventType } from '../models/event.enum';
 
 export interface IEvent {
   data: IEventData;
+  type: DogEventType;
   makeMessage: () => string;
   toJSON: () => object;
 }
 
 export abstract class DogEvent implements IEvent {
   public readonly data: IEventData;
+  public readonly type: DogEventType;
 
   constructor(data: IEventData) {
     this.data = data;
@@ -65,7 +67,7 @@ export abstract class DogEvent implements IEvent {
 
 export class BirthEvent extends DogEvent {
   public readonly data: IBirthEventData;
-  public static type = DogEventType.BIRTH;
+  public readonly type = DogEventType.BIRTH;
 
   constructor (data: IBirthEventData) {
     super(data);
@@ -97,7 +99,7 @@ export class BirthEvent extends DogEvent {
 
 export class FoundEvent extends DogEvent {
   public readonly data: IFoundEventData;
-  public static type = DogEventType.FOUND;
+  public readonly type = DogEventType.FOUND;
 
   constructor (data: IFoundEventData) {
     super(data);
@@ -127,7 +129,7 @@ export class FoundEvent extends DogEvent {
 
 export class LostEvent extends DogEvent {
   public readonly data: ILostEventData;
-  public static type = DogEventType.LOST;
+  public readonly type = DogEventType.LOST;
 
   constructor (data: ILostEventData) {
     super(data);
@@ -159,7 +161,7 @@ export class LostEvent extends DogEvent {
 
 export class InformationEvent extends DogEvent {
   public readonly data: IInformationEventData;
-  public static type = DogEventType.INFO;
+  public readonly type = DogEventType.INFO;
 
   constructor (data: IInformationEventData) {
     super(data);
@@ -196,7 +198,7 @@ export class InformationEvent extends DogEvent {
 
 export class OwnershipEvent extends DogEvent {
   public readonly data: IOwnershipEventData;
-public static type = DogEventType.OWNERSHIP;
+public readonly type = DogEventType.OWNERSHIP;
 
   constructor (data: IOwnershipEventData) {
     super(data);
@@ -228,7 +230,7 @@ public static type = DogEventType.OWNERSHIP;
 
 export class ObservationEvent extends DogEvent {
   public readonly data: IObservationEventData;
-  public static type = DogEventType.OBSERVATION;
+  public readonly type = DogEventType.OBSERVATION;
 
   constructor (data: IObservationEventData) {
     super(data);
@@ -256,7 +258,7 @@ export class ObservationEvent extends DogEvent {
 
 export class IllnessEvent extends DogEvent {
   public readonly data: IIllnessEventData;
-  public static type = DogEventType.ILLNESS;
+  public readonly type = DogEventType.ILLNESS;
 
   constructor (data: IIllnessEventData) {
     super(data);
@@ -286,7 +288,7 @@ export class IllnessEvent extends DogEvent {
 
 export class CureEvent extends DogEvent {
   public readonly data: ICureEventData;
-  public static type = DogEventType.CURE;
+  public readonly type = DogEventType.CURE;
 
   constructor (data: ICureEventData) {
     super(data);
@@ -316,7 +318,7 @@ export class CureEvent extends DogEvent {
 
 export class VaccineEvent extends DogEvent {
   public readonly data: IVaccineEventData;
-  public static type = DogEventType.VACCINE;
+  public readonly type = DogEventType.VACCINE;
 
   constructor (data: IVaccineEventData) {
     super(data);
@@ -346,7 +348,7 @@ export class VaccineEvent extends DogEvent {
 
 export class DeathEvent extends DogEvent {
   public readonly data: IDeathEventData;
-  public static type = DogEventType.DEATH;
+  public readonly type = DogEventType.DEATH;
 
   constructor (data: IDeathEventData) {
     super(data);
