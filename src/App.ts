@@ -3,6 +3,7 @@ import express = require("express");
 import { ClientRouter } from "./routers/owner.router";
 import { ProfessionalRouter } from "./routers/pro.router";
 import bodyParser = require("body-parser");
+import { DogRouter } from "./routers/dog.router";
 class Project {
   public server: express.Express;
   public mongo: MongoClient;
@@ -17,6 +18,7 @@ class Project {
       this.server.use(bodyParser.urlencoded({ extended: true }));
       this.server.use("/owner", new ClientRouter().getRouter());
       this.server.use("/professional", new ProfessionalRouter().getRouter());
+      this.server.use("/dog", new DogRouter().getRouter());
       this.server.listen(3000, _ => {
         console.log("Listening on port 3000")
       });

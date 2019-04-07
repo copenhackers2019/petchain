@@ -38,36 +38,40 @@ export class Dog {
   }
 
   public async getInfo(): Promise<IDogInfo> {
-    const events = await this.getEvents();
-    const ownership = events.find(e => e.type === DogEventType.OWNERSHIP);
-    const birthEvents = events.filter(e => e.type === DogEventType.BIRTH || e.type === DogEventType.INFO);
-    const birth = birthEvents.reduce((acc, ev) => {
-      if (ev.type === DogEventType.BIRTH) {
-        return (ev as BirthEvent).data.date;
-      } else {
-        const e = ev as InformationEvent;
-        if (e.data.estimatedBirth) {
-          return e.data.estimatedBirth;
+    try {
+      const events = await this.getEvents();
+      const ownership = events.find(e => e.type === DogEventType.OWNERSHIP);
+      const birthEvents = events.filter(e => e.type === DogEventType.BIRTH || e.type === DogEventType.INFO);
+      const birth = birthEvents.reduce((acc, ev) => {
+        if (ev.type === DogEventType.BIRTH) {
+          return (ev as BirthEvent).data.date;
+        } else {
+          const e = ev as InformationEvent;
+          if (e.data.estimatedBirth) {
+            return e.data.estimatedBirth;
+          }
         }
-      }
-      return acc;
-    }, -1);
-    const infoEvents = events.filter(e => e.type === DogEventType.INFO);
-    const name = infoEvents.reduce((acc, ev) => {
-      if ((ev as InformationEvent).data.name) {
-        return (ev as InformationEvent).data.name;
-      }
-      return acc;
-    }, "none");
-    const lostFound = events.filter(e => e.type === DogEventType.LOST || e.type === DogEventType.FOUND);
-    const lost = (lostFound === []) ? false : (lostFound[lostFound.length - 1].type === DogEventType.LOST);
-    const age = (birth > 0) ? (Date.now() - birth) / (1000 * 60 * 60 * 24 * 365) : -1;
-    return {
-      owner: ownership ? ownership.data.senderId : "none",
-      age,
-      name,
-      lost,
-    }
+        return acc;
+      }, -1);
+      const infoEvents = events.filter(e => e.type === DogEventType.INFO);
+      const name = infoEvents.reduce((acc, ev) => {
+        if ((ev as InformationEvent).data.name) {
+          return (ev as InformationEvent).data.name;
+        }
+        return acc;
+      }, "none");
+      const lostFound = events.filter(e => e.type === DogEventType.LOST || e.type === DogEventType.FOUND);
+      const lost = (String(lostFound) === String([])) ? false : (lostFound[lostFound.length - 1].type === DogEventType.LOST);
+      const age = (birth > 0) ? (Date.now() - birth) / (1000 * 60 * 60 * 24 * 365) : -1;
+      return {
+        owner: ownership ? ownership.data.senderId : "none",
+        age: age,
+        name: name ? name : "none",
+        lost: lost ? lost : false,
+      } 
+    } catch (err) {
+        throw err
+    } 
   }
 
 }

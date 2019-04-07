@@ -50,8 +50,4 @@ export class ClientRouter {
       return res.status(500).json({ message: "Internal server error." });
     }
   }
-
-  public async getOwner() {
-
-  }
 }
