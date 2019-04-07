@@ -2,6 +2,7 @@ import { Address, TransferTransaction, TimeWindow, XEM, PlainMessage, Account } 
 import { getDogAddress, getAllMessagesWithString, broadcastTransaction, createTimeWindow } from "./nem.utils";
 import { DogEvent } from "./event.logic";
 import { APP_ADDRESS, APP_PRI_KEY } from "../constants";
+import { IDogInfo } from "../models/doginfo.model";
 
 export class Dog {
   public readonly chipNumber: string;
@@ -33,6 +34,11 @@ export class Dog {
     }
     const events = messages.map(DogEvent.fromMessage).filter((e => e !== null));
     return events as DogEvent[];
+  }
+
+  public async getInfo(): Promise<IDogInfo> {
+    const events = await this.getEvents();
+    const ownerships = events.filter(e => e)
   }
 
 }

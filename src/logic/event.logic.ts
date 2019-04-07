@@ -1,4 +1,5 @@
 import { IEventData, IBirthEventData, IFoundEventData, IInformationEventData, ILostEventData, IOwnershipEventData, IObservationEventData, IIllnessEventData, ICureEventData, IVaccineEventData, IDeathEventData } from '../models/event.model';
+import { DogEventType } from '../models/event.enum';
 
 export interface IEvent {
   data: IEventData;
@@ -31,25 +32,25 @@ export abstract class DogEvent implements IEvent {
   public static fromObject(obj: any): DogEvent | null {
     const type = obj.type;
     switch(type) {
-      case "birth":
+      case DogEventType.BIRTH:
         return BirthEvent.fromObject(obj);
-      case "found":
+      case DogEventType.FOUND:
         return FoundEvent.fromObject(obj);
-      case "lost":
+      case DogEventType.LOST:
         return LostEvent.fromObject(obj);
-      case "info":
+      case DogEventType.INFO:
         return InformationEvent.fromObject(obj);
-      case "ownership":
+      case DogEventType.OWNERSHIP:
         return OwnershipEvent.fromObject(obj);
-      case "observation":
+      case DogEventType.OBSERVATION:
         return ObservationEvent.fromObject(obj);
-      case "illness":
+      case DogEventType.ILLNESS:
         return IllnessEvent.fromObject(obj);
-      case "cure":
+      case DogEventType.CURE:
         return CureEvent.fromObject(obj);
-      case "vaccine":
+      case DogEventType.VACCINE:
         return VaccineEvent.fromObject(obj);
-      case "death":
+      case DogEventType.DEATH:
         return DeathEvent.fromObject(obj);
       default:
         return null;
@@ -64,6 +65,7 @@ export abstract class DogEvent implements IEvent {
 
 export class BirthEvent extends DogEvent {
   public readonly data: IBirthEventData;
+  public static type = DogEventType.BIRTH;
 
   constructor (data: IBirthEventData) {
     super(data);
@@ -76,7 +78,7 @@ export class BirthEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "birth",
+      type: DogEventType.BIRTH,
       parents: this.data.parents,
       location: this.data.location,
     }
@@ -95,6 +97,7 @@ export class BirthEvent extends DogEvent {
 
 export class FoundEvent extends DogEvent {
   public readonly data: IFoundEventData;
+  public static type = DogEventType.FOUND;
 
   constructor (data: IFoundEventData) {
     super(data);
@@ -107,7 +110,7 @@ export class FoundEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "found",
+      type: DogEventType.FOUND,
       location: this.data.location,
     }
   }
@@ -124,6 +127,7 @@ export class FoundEvent extends DogEvent {
 
 export class LostEvent extends DogEvent {
   public readonly data: ILostEventData;
+  public static type = DogEventType.LOST;
 
   constructor (data: ILostEventData) {
     super(data);
@@ -136,7 +140,7 @@ export class LostEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "lost",
+      type: DogEventType.LOST,
       location: this.data.location,
       contact: this.data.contact,
     }
@@ -155,6 +159,7 @@ export class LostEvent extends DogEvent {
 
 export class InformationEvent extends DogEvent {
   public readonly data: IInformationEventData;
+  public static type = DogEventType.INFO;
 
   constructor (data: IInformationEventData) {
     super(data);
@@ -167,7 +172,7 @@ export class InformationEvent extends DogEvent {
   public toJSON(): object {
     const j = {
       ...super.toJSON(),
-      type: "info",
+      type: DogEventType.INFO,
       name: this.data.name,
       breed: this.data.breed,
     }
@@ -191,6 +196,7 @@ export class InformationEvent extends DogEvent {
 
 export class OwnershipEvent extends DogEvent {
   public readonly data: IOwnershipEventData;
+public static type = DogEventType.OWNERSHIP;
 
   constructor (data: IOwnershipEventData) {
     super(data);
@@ -203,7 +209,7 @@ export class OwnershipEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "ownership",
+      type: DogEventType.OWNERSHIP,
       ownerId: this.data.ownerId,
       kind: this.data.kind,
     }
@@ -222,6 +228,7 @@ export class OwnershipEvent extends DogEvent {
 
 export class ObservationEvent extends DogEvent {
   public readonly data: IObservationEventData;
+  public static type = DogEventType.OBSERVATION;
 
   constructor (data: IObservationEventData) {
     super(data);
@@ -234,7 +241,7 @@ export class ObservationEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "observation",
+      type: DogEventType.OBSERVATION,
     }
   }
 
@@ -249,6 +256,7 @@ export class ObservationEvent extends DogEvent {
 
 export class IllnessEvent extends DogEvent {
   public readonly data: IIllnessEventData;
+  public static type = DogEventType.ILLNESS;
 
   constructor (data: IIllnessEventData) {
     super(data);
@@ -261,7 +269,7 @@ export class IllnessEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "illness",
+      type: DogEventType.ILLNESS,
       illness: this.data.illness,
     }
   }
@@ -278,6 +286,7 @@ export class IllnessEvent extends DogEvent {
 
 export class CureEvent extends DogEvent {
   public readonly data: ICureEventData;
+  public static type = DogEventType.CURE;
 
   constructor (data: ICureEventData) {
     super(data);
@@ -290,7 +299,7 @@ export class CureEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "cure",
+      type: DogEventType.CURE,
       illness: this.data.illness,
     }
   }
@@ -307,6 +316,7 @@ export class CureEvent extends DogEvent {
 
 export class VaccineEvent extends DogEvent {
   public readonly data: IVaccineEventData;
+  public static type = DogEventType.VACCINE;
 
   constructor (data: IVaccineEventData) {
     super(data);
@@ -319,7 +329,7 @@ export class VaccineEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "vaccine",
+      type: DogEventType.VACCINE,
       vaccine: this.data.vaccine,
     }
   }
@@ -336,6 +346,7 @@ export class VaccineEvent extends DogEvent {
 
 export class DeathEvent extends DogEvent {
   public readonly data: IDeathEventData;
+  public static type = DogEventType.DEATH;
 
   constructor (data: IDeathEventData) {
     super(data);
@@ -348,7 +359,7 @@ export class DeathEvent extends DogEvent {
   public toJSON(): object {
     return {
       ...super.toJSON(),
-      type: "death",
+      type: DogEventType.DEATH,
     }
   }
 

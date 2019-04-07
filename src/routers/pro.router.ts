@@ -2,7 +2,6 @@ import { Request, Response, Router } from "express";
 import { Owner } from "../logic/owner.logic";
 import { Dog } from "../logic/dog.logic";
 import { DogEvent } from "../logic/event.logic";
-import { stringify } from "querystring";
 
 export class ProfessionalRouter {
   private router: Router;
