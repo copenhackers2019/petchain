@@ -1,6 +1,8 @@
 import { Request, Response, Router } from "express";
 import { Owner } from "../logic/owner.logic";
 import { Dog } from "../logic/dog.logic";
+import { DogEvent } from "../logic/event.logic";
+import { stringify } from "querystring";
 
 export class ProfessionalRouter {
   private router: Router;
@@ -21,7 +23,21 @@ export class ProfessionalRouter {
 
   public async sendEvent(req: Request, res: Response): Promise<Response | void> {
     try {
-      // Send message to Blockchain
+      // 1. validate that the request is done by validated professional
+      // 2. validate the body of the request with format:
+      // {
+      //   dogId: string;
+      //   type: string;
+      //   params: Object;
+      // }
+      // 3. Send message to Blockchain
+      const dog = new Dog(req.body.degId);
+      const event = DogEvent.fromObject({...req.body.params, type: req.body.type})
+      if (!event) {
+        return res.status(400).json({ message: "type not available" });
+      }
+      await dog.sendEvent(event);
+      return res.status(200).json({ message: "success " });
     } catch (err) {
       return res.status(500).json({ message: "Internal server error." });
     }
@@ -33,7 +49,7 @@ export class ProfessionalRouter {
       const dogId = req.params.dogId;
       await Owner.addOwnedDog(uid, dogId);
       // const dog = new Dog(dogId);
-      // const info = new OwnerEvent({
+      // const info = new InformationEvent({
       //   // TODO
       // });
       // dog.sendEvent(info).then(() => {
