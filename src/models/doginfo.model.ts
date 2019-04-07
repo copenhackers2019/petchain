@@ -3,4 +3,5 @@ export interface IDogInfo {
   age: number;
   name: string;
   lost: boolean;
+  breed: string;
 }

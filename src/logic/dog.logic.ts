@@ -60,14 +60,21 @@ export class Dog {
         }
         return acc;
       }, "none");
+      const breed = infoEvents.reduce((acc, ev) => {
+        if ((ev as InformationEvent).data.breed) {
+          return (ev as InformationEvent).data.breed;
+        }
+        return acc;
+      }, "none");
       const lostFound = events.filter(e => e.type === DogEventType.LOST || e.type === DogEventType.FOUND);
-      const lost = (String(lostFound) === String([])) ? false : (lostFound[lostFound.length - 1].type === DogEventType.LOST);
+      const lost = (String(lostFound) === String([])) ? false : (lostFound[0].type === DogEventType.LOST);
       const age = (birth > 0) ? (Date.now() - birth) / (1000 * 60 * 60 * 24 * 365) : -1;
       return {
         owner: ownership ? (ownership as OwnershipEvent).data.ownerId : "none",
         age: age,
         name: name ? name : "none",
         lost: lost ? lost : false,
+        breed: breed ? breed : "none",
       }
     } catch (err) {
         throw err
