@@ -12,7 +12,7 @@ export class Owner {
   public static async getOwnDogs(uid: string) {
     const db = await project.mongo.db("clients");
     const dogIDs = await db.collection("Owners").findOne({_id: uid});
-    return dogIDs.onwedDogs;
+    return dogIDs.ownedDogs;
   }
 
   public static async addOwnedDog(uid: string, dogId: string) {
