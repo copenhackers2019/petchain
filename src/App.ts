@@ -18,7 +18,6 @@ class Project {
         console.log("Listening on port 3000")
       });
     } catch (err) {
-      console.log("MALAKA", err);
       throw err;
     }
   }
