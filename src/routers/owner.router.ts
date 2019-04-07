@@ -20,6 +20,10 @@ export class ClientRouter {
 
   public async getOwnDogs(req: Request, res: Response): Promise<Response | void> {
     try {
+      // 1. Request done by owner (not professional, no verification)
+      // 2. Retrieve uid from url
+      // 3. Returns parameter ownedDogs from object with _id === uid in collection owners
+
       const uid = req.params.uid;
       const dogs = await Owner.getOwnDogs(uid);
 
@@ -31,6 +35,10 @@ export class ClientRouter {
 
   public async createOwner(req: Request, res: Response): Promise<Response | void> {
     try {
+      // 1. Function called after sihn up, to store _id of user in mongo (to map with owned dogs)
+      // 2. Retrieve uid from url
+      // 3. Stores user in collection owners
+
       const uid = req.params.uid;
       const owner = new Owner({
         _id: uid,
