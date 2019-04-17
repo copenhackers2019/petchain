@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { Owner } from "../logic/owner.logic";
 import { Dog } from "../logic/dog.logic";
 import { DogEvent, OwnershipEvent } from "../logic/event.logic";
+import { privilegedUsers } from "../privilegedUsers";
 
 export class ProfessionalRouter {
   private router: Router;
@@ -23,6 +24,11 @@ export class ProfessionalRouter {
   public async sendEvent(req: Request, res: Response): Promise<Response | void> {
     try {
       // 1. validate that the request is done by validated professional
+      const userId = req.get("uid")!;
+      const token = req.get("user-token")!;
+      if (!privilegedUsers.includes(userId)) {
+        return res.status(400).json({message: "user not verified"});
+      }
       // 2. validate the body of the request with format:
       // {
       //   dogId: string;
@@ -46,6 +52,11 @@ export class ProfessionalRouter {
   public async addDog(req: Request, res: Response): Promise<Response | void> {
     try {
       // 1. validate that the request is done by validated professional
+      const userId = req.get("uid")!;
+      const token = req.get("user-token")!;
+      if (!privilegedUsers.includes(userId)) {
+        return res.status(400).json({message: "user not verified"});
+      }
       // 2. validate the body of the request with format:
       // {
       //    uid: string    -->  owner id
